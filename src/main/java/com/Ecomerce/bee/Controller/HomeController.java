@@ -1,6 +1,8 @@
 package com.Ecomerce.bee.Controller;
 
+import com.Ecomerce.bee.users.dto.UserDto;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -58,5 +60,20 @@ public class HomeController {
     public String contact(){
         return "basicTemplates/contact";
     }
+
+    @RequestMapping("/authentication-login")
+    public String loginForm() {
+        return "authentication-login";
+    }
+
+
+
+    @GetMapping("/authentication-register")
+    public String registrationForm(Model model) {
+        UserDto user = new UserDto();
+        model.addAttribute("user", user);
+        return "authentication-register";
+    }
+
 
 }

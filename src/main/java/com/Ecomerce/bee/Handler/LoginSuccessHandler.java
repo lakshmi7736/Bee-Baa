@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -65,7 +66,12 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 //        jwtTokenCookie.setPath("/"); // Set the cookie path to '/' to make it accessible across the entire application
 //        response.addCookie(jwtTokenCookie);
 
-        response.sendRedirect("/user/"); // Redirect to the desired URL after successful login
+        // Redirect to the desired URL based on the user's role
+        if (userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+            response.sendRedirect("/Admin");
+        } else {
+            response.sendRedirect("/");
+        }
     }
 
 

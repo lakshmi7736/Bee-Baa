@@ -6,7 +6,7 @@ import com.Ecomerce.bee.users.dao.UserDao;
 import com.Ecomerce.bee.users.dto.UserDto;
 import com.Ecomerce.bee.users.entity.Role;
 import com.Ecomerce.bee.users.entity.User;
-import com.Ecomerce.bee.utils.MCBConstant;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+
 import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -35,10 +37,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUser(UserDto userDto) {
-        Role role = roleDao.findByName(MCBConstant.Roles.USER);
-        if (role == null) {
-            role = roleDao.save(new Role(MCBConstant.Roles.USER));
-        }
+        Role role = roleDao.findById("ROLE_USER").get();
 
         User user = User.builder()
                 .name(userDto.getName())
@@ -54,10 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveAdmin(UserDto userDto) {
-        Role role = roleDao.findByName(MCBConstant.Roles.ADMIN);
-        if (role == null) {
-            role = roleDao.save(new Role(MCBConstant.Roles.ADMIN));
-        }
+        Role role = roleDao.findById("ROLE_ADMIN").get();
 
         User user = User.builder()
                 .name(userDto.getName())

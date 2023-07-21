@@ -3,11 +3,9 @@ package com.Ecomerce.bee.users.controller;
 
 import com.Ecomerce.bee.Security.JwtHelper;
 import com.Ecomerce.bee.users.dto.UserDto;
-import com.Ecomerce.bee.users.entity.JwtRequest;
-import com.Ecomerce.bee.users.entity.JwtResponse;
-import com.Ecomerce.bee.users.entity.RefreshToken;
-import com.Ecomerce.bee.users.entity.User;
+import com.Ecomerce.bee.users.entity.*;
 import com.Ecomerce.bee.users.service.RefreshTokenService;
+import com.Ecomerce.bee.users.service.RoleServices;
 import com.Ecomerce.bee.users.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,6 +26,8 @@ public class LoginController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private RoleServices roleService;
 
     @Autowired
     private RefreshTokenService refreshTokenService;
@@ -42,19 +39,6 @@ public class LoginController {
     private final JwtHelper helper;
 
 
-    @RequestMapping("/authentication-login")
-    public String loginForm() {
-        return "authentication-login";
-    }
-
-
-
-    @GetMapping("/authentication-register")
-    public String registrationForm(Model model) {
-        UserDto user = new UserDto();
-        model.addAttribute("user", user);
-        return "authentication-register";
-    }
 
     @PostMapping("/registration")
     public String registration(
@@ -93,7 +77,14 @@ public class LoginController {
             return "/authentication-register";
         }
 
-        userService.saveUser(userDto);
+        userService.saveAdmin(userDto);
         return "redirect:/authentication-register?success";
+    }
+
+
+    @PostMapping("/role")
+    public Role createRole(@RequestBody Role role){
+        return  roleService.createNewRole(role);
+
     }
 }

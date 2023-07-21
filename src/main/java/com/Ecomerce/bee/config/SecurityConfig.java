@@ -40,14 +40,6 @@ public class SecurityConfig {
     @Autowired
     private JwtAuthenticationFilter filter;
 
-//
-//    @Bean
-//    public AuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//        provider.setUserDetailsService(userDetailsService);
-//        provider.setPasswordEncoder(passwordEncoder);
-//        return provider;
-//    }
 
     @Bean
     public DaoAuthenticationProvider doDaoAuthenticationProvider(){
@@ -62,10 +54,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf->csrf.disable())
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/authentication-register/**").permitAll()
-                        .requestMatchers("/**").permitAll()
-                        .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/Admin","/icon-tabler","/ui-buttons","/ui-alerts","/ui-card","/ui-typography","/ui-forms","/sample-page").hasRole("ADMIN")
+                        .requestMatchers("/registration/**","/registrationAdmin/**").permitAll()
+                        .requestMatchers("/authentication-login/**","/authentication-register/**","/assets/**").permitAll()
+                        .requestMatchers("/","/Womens","/frontEnd/**","/Mens","/shop","/product-details","/shop-cart","/checkout","/blog-details","/blog","/contact").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin((form) -> form
